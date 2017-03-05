@@ -1,8 +1,8 @@
 **_[!] weBLeech is still a work in progress.. wait for it [!]_**
 - [x] create a guided run
-- [] make the guided run pretty
-- [] bring the spider to life
-- [] build a web based front-end
+-  make the guided run pretty
+-  bring the spider to life
+-  build a web based front-end
 
 **weBLeech** is a web based (HTTP/S) leech, you can ask it to crawl a site and find all available resources for download and then you can ask it to
 actually go and fetch it all wheter the resource requires login or not, it can also filter the download list by 'file type'.

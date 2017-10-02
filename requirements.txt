@@ -1,0 +1,2 @@
+ConfigParser==3.5.0
+sqlite3==99.0

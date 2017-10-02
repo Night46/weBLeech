@@ -46,8 +46,9 @@ class weBLeech:
 class userInput(weBLeech):
 	def URLresource(self):
 		print '''
-Please provide a recource in the form of a FQDN (e.g www.google.com)
-no need to enter a protocol prefix (i.e HTTP/HTTPS)
+Please provide a recource in the form of a FQDN (e.g http://www.google.com)
+
+[!] make sure to enter a protocol prefix (i.e HTTP/HTTPS) [!]
 '''
 		resource = raw_input()
 		print 'Is the spelling correct for: ' +resource+ ' (Y/n)'
@@ -167,11 +168,18 @@ please scheck that the user running weBLeech has appropriate permissions and sta
 				tables_exsist = resource_URL in chain.from_iterable(tables_list)
 
 				if tables_exsist != True:
-					cursor.execute('CREATE TABLE IF NOT EXISTS \"'+resource_URL+'\" (url text, credentials text, username text, password text, filename text, filetype text, status text)')
-					print '[-] Added recource '+resource_URL+' to DB.'
-					cursor.execute('INSERT INTO \"'+resource_URL+'\" VALUES (\"'+resource_URL+'\", "credentials", \"'+resource_user+'\", \"'+resource_pass+'\", "filename", "filetype", "status" )')
-					print '[-] Added recource credentials to table.'
-					db.commit()
+					if resource_user in ['None', ''] and resource_pass in ['None', '']:
+						cursor.execute('CREATE TABLE IF NOT EXISTS \"'+resource_URL+'\" (url text, credentials text, username text, password text, filename text, filetype text, status text)')
+						print '[-] Added recource '+resource_URL+'  from default resource list to DB.'
+						cursor.execute('INSERT INTO \"'+resource_URL+'\" VALUES (\"'+resource_URL+'\", "False", \"'+resource_user+'\", \"'+resource_pass+'\", "filename", "filetype", "NDY" )')	#NODY = NotDownloadedYet
+						print '[-] Added recource credentials from default resource list location to table.'
+						db.commit()
+					else:
+						cursor.execute('CREATE TABLE IF NOT EXISTS \"'+resource_URL+'\" (url text, credentials text, username text, password text, filename text, filetype text, status text)')
+						print '[-] Added recource '+resource_URL+'  from default resource list to DB.'
+						cursor.execute('INSERT INTO \"'+resource_URL+'\" VALUES (\"'+resource_URL+'\", "True", \"'+resource_user+'\", \"'+resource_pass+'\", "filename", "filetype", "NDY" )')	#NODY = NotDownloadedYet
+						print '[-] Added recource credentials from default resource list location to table.'
+						db.commit()
 				elif tables_exsist == True:
 					print ''
 					print '[!] Recource '+resource_URL+' already exsits in DB.'
@@ -195,11 +203,18 @@ please scheck that the user running weBLeech has appropriate permissions and sta
 				tables_exsist = resource_URL in chain.from_iterable(tables_list)
 
 				if tables_exsist != True:
-					cursor.execute('CREATE TABLE IF NOT EXISTS \"'+resource_URL+'\" (url text, credentials text, username text, password text, filename text, filetype text, status text)')
-					print '[-] Added recource '+resource_URL+' to DB.'
-					cursor.execute('INSERT INTO \"'+resource_URL+'\" VALUES (\"'+resource_URL+'\", "credentials", \"'+resource_user+'\", \"'+resource_pass+'\", "filename", "filetype", "status" )')
-					print '[-] Added recource credentials to table.'
-					db.commit()
+					if resource_user in ['None', ''] and resource_pass in ['None', '']:
+						cursor.execute('CREATE TABLE IF NOT EXISTS \"'+resource_URL+'\" (url text, credentials text, username text, password text, filename text, filetype text, status text)')
+						print '[-] Added recource '+resource_URL+'  from user resource list to DB.'
+						cursor.execute('INSERT INTO \"'+resource_URL+'\" VALUES (\"'+resource_URL+'\", "False", \"'+resource_user+'\", \"'+resource_pass+'\", "filename", "filetype", "NDY" )')	#NODY = NotDownloadedYet
+						print '[-] Added recource credentials from user resource list to table.'
+						db.commit()
+					else:
+						cursor.execute('CREATE TABLE IF NOT EXISTS \"'+resource_URL+'\" (url text, credentials text, username text, password text, filename text, filetype text, status text)')
+						print '[-] Added recource '+resource_URL+' from user resource list to DB.'
+						cursor.execute('INSERT INTO \"'+resource_URL+'\" VALUES (\"'+resource_URL+'\", "True", \"'+resource_user+'\", \"'+resource_pass+'\", "filename", "filetype", "NDY" )')	#NODY = NotDownloadedYet
+						print '[-] Added recource credentials from user resource list to table.'
+						db.commit()
 				elif tables_exsist == True:
 					print ''
 					print '[!] Recource '+resource_URL+' already exsits in DB.'
@@ -577,12 +592,12 @@ please choose "n", otherwise the default behaviour will be to reset the file con
 			resourcelist = open(self.resourcelist_location+"/"+self.resourcelist_filename, 'w', 0)
 			original_resourcelist = '''
 [resource0]
-resource = example1.com
+resource = https://example1.com
 username = username
 password = password
 
 [resource1]
-resource = example2.com
+resource = http://example2.com
 username = None
 password = None
 '''
@@ -592,12 +607,12 @@ password = None
 			resourcelist = open(userFilePath+"/"+self.resourcelist_filename, 'w', 0)
 			original_resourcelist = '''
 [resource0]
-resource = example1.com
+resource = https://example1.com
 username = username
 password = password
 
 [resource1]
-resource = example2.com
+resource = http://example2.com
 username = None
 password = None
 '''
